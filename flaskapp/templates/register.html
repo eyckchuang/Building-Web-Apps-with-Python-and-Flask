@@ -1,9 +1,7 @@
-<!DOCTYPE html>
-<html>
-  <body>
-    {% extends "parent.html" %}
+{% extends "parent.html" %}
+
     {% block contents %}
-    <form name="form1" method="post" action="">
+    <form name="form1" method="post" action="register">
       <table align="center" border="5" bgcolor="#F0F0F0">
         <caption align="top">
           <h2>Registration Form</h2>
@@ -35,5 +33,3 @@
       </table>
     </form>
     {% endblock %}
-  </body>
-</html>
