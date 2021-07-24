@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+  <table>
+      <tr>
+          <th>Name</th>
+          <th>Gender</th>
+          <th>Course</th>
+          <th>Mobile</th>
+          <th>User name</th>
+          <th>Password</th>
+      </tr>
+      {% for row in students %}
+      <tr>
+          <td>{{row['Name']}}</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>{{row['Username']}}</td>
+          <td></td>
+      </tr>
+      {% endfor %}
+  </table>
+</body>
+</html>

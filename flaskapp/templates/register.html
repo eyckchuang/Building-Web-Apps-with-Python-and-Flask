@@ -1,7 +1,7 @@
-{% extends "parent.html" %}
+<!--{% extends "parent.html" %}-->
 
     {% block contents %}
-    <form name="form1" method="post" action="register">
+    <form name="form1" method="post" action="addrec">
       <table align="center" border="5" bgcolor="#F0F0F0">
         <caption align="top">
           <h2>Registration Form</h2>
@@ -11,8 +11,16 @@
           <td><input name="name" type="text" size="75"></td>
         </tr>
         <tr>
+          <td>Gender</td>
+          <td><input type="text" name="gender" /></td>
+        </tr>
+        <tr>
+          <td>Mobile</td>
+          <td><input type="text" name="mobile"></td>
+        </tr>
+        <tr>
           <td>UserID</td>
-          <td><input type="text" name="textfield"></td>
+          <td><input type="text" name="user"></td>
         </tr>
         <tr>
           <td>Address</td>
@@ -24,7 +32,7 @@
         </tr>
         <tr>
           <td>Password</td>
-          <td><input name="password" type="password" id="password" size="10"></td>
+          <td><input name="pwd" type="password" id="pwd" size="10"></td>
         </tr>
         <tr>
           <td>&nbsp;</td>
