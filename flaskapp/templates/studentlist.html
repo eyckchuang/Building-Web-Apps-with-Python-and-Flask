@@ -5,7 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-  <table>
+  <table border="1">
       <tr>
           <th>Name</th>
           <th>Gender</th>
@@ -14,14 +14,14 @@
           <th>User name</th>
           <th>Password</th>
       </tr>
-      {% for row in students %}
+      {% for student in students %}
       <tr>
-          <td>{{row['Name']}}</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td>{{row['Username']}}</td>
-          <td></td>
+          <td>{{student.name}}</td>
+          <td>{{student.gender}}</td>
+          <td>{{student.course}}</td>
+          <td>{{student.mobile}}</td>
+          <td>{{student.username}}</td>
+          <td>{{student.password}}</td>
       </tr>
       {% endfor %}
   </table>
