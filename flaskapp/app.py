@@ -1,23 +1,48 @@
 import sqlite3
 
-from flask import Flask, render_template, request, make_response
+from flask import Flask, render_template, request, make_response, g
 from flask_bootstrap import Bootstrap
 from flaskapp.encryption import encpwd
 
 from flask_sqlalchemy import SQLAlchemy
 
-from models import Students, app, db, Books, mongo, User
-
+from flaskapp.restpluggable import BookAPI
+from models import Students, Books, User
+from flaskapp import create_app, db
 from myform import AdmissionForm, LoginForm
 
 from flask_login import LoginManager, login_required, current_user, login_user, logout_user
 from flask_uploads import UploadSet, configure_uploads, DATA, IMAGES
 
 # app = Flask(__name__)
+
+app = create_app()
 app.static_folder = 'static'
 app.config['UPLOAD_FOLDER'] = 'upload'
 login_manager = LoginManager(app)
 bs = Bootstrap(app)
+
+
+@app.before_first_request
+def first_request():
+    print("This function is run before first request")
+
+
+@app.before_request
+def each_request():
+    g.user = 'guest'
+    print("This is run before {} visits '{}'".format(g.user, request.path))
+
+
+@app.after_request
+def after_request(response):
+    print("This executes after exiting '{}'".format(request.path))
+    return response
+
+
+@app.route('/myip')
+def myip():
+    return "<h2>Your IP address is {}: {}</h2>".format(request.remote_addr, g.user)
 
 
 @app.route('/createtable')
@@ -48,13 +73,6 @@ def booklist():
     q = db.session.query(Books, Students)
     rows = q.filter(Books.borrower == Students.username).all()
     return render_template('showbooks.html', rows=rows)
-
-
-@app.route('/')
-def index():
-    # form = AdmissionForm()
-    # return render_template("admission.html", form=form)
-    return render_template("index.html")
 
 
 @app.route('/admission', methods=['GET', 'POST'])
@@ -106,7 +124,7 @@ def login():
         user = User.query.filter_by(id=id).first()
         if user is not None and user.pwd == pwd:
             login_user(user)
-            return "<h2>you are logged in.</h2><a href='/'>click to go back</a>"
+            return "<h2>you are logged in.</h2><a href='/logout'>logout</a>"
         else:
             return "<h2>Try again.</h2><a href='/'>click to go back</a>"
     else:

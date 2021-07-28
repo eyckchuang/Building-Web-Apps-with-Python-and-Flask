@@ -4,21 +4,7 @@ from flask_pymongo import PyMongo
 from flask_mongoengine import MongoEngine
 import mongoengine as me
 from flask_login import UserMixin
-
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mydata.db'
-app.config['SECRET_KEY'] = "random string"
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-db = SQLAlchemy(app)
-app.config['MONGO_URI'] = 'mongodb://localhost:27017/mydata'
-mongo = PyMongo(app)
-
-app.config['MONGODB_SETTINGS'] = {
-    'db': 'mydata',
-    'host': 'localhost',
-    'port':27017
-}
-db_mongo = MongoEngine(app)
+from flaskapp import db
 
 
 class Students(me.Document):
@@ -65,13 +51,16 @@ class User(db.Model, UserMixin):
 
 
 class Books(db.Model):
-    bookID = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100))
-    author = db.Column(db.String(50))
-    borrower = db.Column(db.String(6), db.ForeignKey('Students.username'))
+    book_id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(20))
+    author = db.Column(db.String(20))
+    price = db.Column(db.Integer)
 
-    def __init__(self, id, title, author, borrower):
-        self.id = id
+    def __init__(self, book_id, title, author, price):
+        self.book_id = book_id
         self.title = title
         self.author = author
-        self.borrower = borrower
+        self.price = price
+
+    def serialize(self):
+        return {"book_id": self.book_id, "title": self.title, "author": self.author, "price": self.price}
