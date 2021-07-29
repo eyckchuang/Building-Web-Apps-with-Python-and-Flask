@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_pymongo import PyMongo
 from flask_mongoengine import MongoEngine
 
+
 db = SQLAlchemy()
 
 
@@ -28,10 +29,11 @@ def create_app():
     with app.app_context():
         from flaskapp.engg.routes import engg
         from flaskapp.mngmnt.routes import mngmnt
-        from flaskapp.routes import root
+        from flaskapp.routes import root_bp, api_bp
         app.register_blueprint(engg, url_prefix='/engineering')
         app.register_blueprint(mngmnt, url_prefix='/management')
-        app.register_blueprint(root, url_prefix='/')
+        app.register_blueprint(root_bp, url_prefix='/')
+        app.register_blueprint(api_bp, url_prefix='/api')
         return app
     # with app.app_context():
     #     from . import views

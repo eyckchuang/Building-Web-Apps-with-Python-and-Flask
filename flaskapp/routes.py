@@ -1,12 +1,12 @@
 from flask import Blueprint, render_template, jsonify, request
-
-from flaskapp.restpluggable import BookAPI
+from flask_restful import Api, Resource
+from flaskapp.restpluggable import BookAPI, BookItem, BookList
 from models import Books, db
 
-root = Blueprint('root', __name__)
+root_bp = Blueprint('root', __name__)
 
 
-@root.route('/')
+@root_bp.route('/')
 def index():
     return render_template('index.html')
 
@@ -56,6 +56,11 @@ def index():
 
 
 book_view = BookAPI.as_view('book_api')
-root.add_url_rule('/books/', defaults={'id': None}, view_func=book_view, methods=['GET', ])
-root.add_url_rule('/books/', view_func=book_view, methods=['POST', ])
-root.add_url_rule('/books/<id>', view_func=book_view, methods=['GET', 'PUT', 'DELETE'])
+root_bp.add_url_rule('/books/', defaults={'id': None}, view_func=book_view, methods=['GET', ])
+root_bp.add_url_rule('/books/', view_func=book_view, methods=['POST', ])
+root_bp.add_url_rule('/books/<id>', view_func=book_view, methods=['GET', 'PUT', 'DELETE'])
+
+api_bp = Blueprint('api', __name__)
+api = Api(api_bp)
+api.add_resource(BookList, '/books/')
+api.add_resource(BookItem, '/books/<id>')
